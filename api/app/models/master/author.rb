@@ -20,6 +20,9 @@
 #
 
 class Master::Author < ApplicationRecord
+  has_and_belongs_to_many :books, -> { readonly }, class_name: 'Master::Book', join_table: 'master_books_authors'
+  has_and_belongs_to_many :circles, class_name: 'Master::Circle', join_table: 'master_circles_authors'
+
   validates_presence_of :name
   validates_presence_of :name_kana
   validates_format_of :name_kana, with: /\A[a-zA-Z0-9ぁ-ゔ\ー\u0020]+\z/

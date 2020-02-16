@@ -22,6 +22,11 @@
 require 'rails_helper'
 
 RSpec.describe Master::Author, type: :model do
+  describe 'associations' do
+    it { should have_and_belong_to_many(:books).class_name('Master::Book').join_table('master_books_authors') }
+    it { should have_and_belong_to_many(:circles).class_name('Master::Circle').join_table('master_circles_authors') }
+  end
+
   describe 'validations' do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:name_kana) }

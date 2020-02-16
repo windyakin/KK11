@@ -29,6 +29,11 @@
 require 'rails_helper'
 
 RSpec.describe Master::Book, type: :model do
+  describe 'associations' do
+    it { should have_and_belong_to_many(:circles).class_name('Master::Circle') }
+    it { should have_and_belong_to_many(:authors).class_name('Master::Author').join_table('master_books_authors') }
+  end
+
   describe 'enum' do
     specify do
       should define_enum_for(:book_size).with_values(

@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_13_121653) do
+ActiveRecord::Schema.define(version: 2020_02_15_135941) do
+
+  create_table "master_authors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "name_kana", null: false
+    t.text "description"
+    t.string "twitter_id"
+    t.string "pixiv_id"
+    t.string "website_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_master_authors_on_name"
+    t.index ["pixiv_id"], name: "index_master_authors_on_pixiv_id"
+    t.index ["twitter_id"], name: "index_master_authors_on_twitter_id"
+  end
 
   create_table "master_books", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "title", null: false
@@ -31,6 +45,15 @@ ActiveRecord::Schema.define(version: 2020_02_13_121653) do
     t.index ["melon_id"], name: "index_master_books_on_melon_id"
     t.index ["title"], name: "index_master_books_on_title"
     t.index ["tora_id"], name: "index_master_books_on_tora_id"
+  end
+
+  create_table "master_circles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "name_kana", null: false
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_master_circles_on_name"
   end
 
 end

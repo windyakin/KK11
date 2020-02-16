@@ -1,0 +1,56 @@
+name: API CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    services:
+      database:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v1
+        with:
+          path: api/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('api/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6
+
+      - name: Install bundler
+        run: gem install bundler -v "~> 1.17"
+
+      - name: Execute bundle install
+        working-directory: ./api
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Setup database
+        working-directory: ./api
+        run: bundle exec rails db:create db:schema:load
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: mysql2://root:root@127.0.0.1:${{ job.services.database.ports['3306'] }}/?encoding=utf8mb4&charset=utf8mb4&collation=utf8mb4_general_ci
+
+      - name: Run rspec
+        working-directory: ./api
+        run: bundle exec rspec --format documentation
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: mysql2://root:root@127.0.0.1:${{ job.services.database.ports['3306'] }}/?encoding=utf8mb4&charset=utf8mb4&collation=utf8mb4_general_ci

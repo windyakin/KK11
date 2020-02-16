@@ -1,0 +1,7 @@
+require: rubocop-rails
+
+Layout/LineLength:
+  Max: 150
+
+Bundler/OrderedGems:
+  Enabled: false

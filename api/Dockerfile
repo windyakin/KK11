@@ -10,4 +10,4 @@ RUN bundle install -j4
 COPY . .
 
 ENTRYPOINT [ "bundle", "exec" ]
-CMD [ "rails", "s", "-p", "3000" ]
+CMD [ "rails", "s", "-p", "3000", "-b", "0.0.0.0" ]

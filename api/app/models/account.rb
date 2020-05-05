@@ -37,5 +37,7 @@ class Account < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  validates :username, presence: true
+  has_many :items, class_name: 'User::Item'
+
+  validates :username, presence: true, format: { with: /\A[a-z0-9_]+\z/ }
 end

@@ -32,6 +32,7 @@ RSpec.describe Master::Book, type: :model do
   describe 'associations' do
     it { should have_and_belong_to_many(:circles).class_name('Master::Circle') }
     it { should have_and_belong_to_many(:authors).class_name('Master::Author').join_table('master_books_authors') }
+    it { should have_many(:user_items).class_name('User::Item') }
   end
 
   describe 'enum' do

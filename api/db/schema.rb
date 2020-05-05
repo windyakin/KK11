@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_29_081725) do
+ActiveRecord::Schema.define(version: 2020_05_05_053524) do
 
   create_table "accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -107,6 +107,17 @@ ActiveRecord::Schema.define(version: 2020_02_29_081725) do
     t.index ["author_id"], name: "index_master_circles_authors_on_author_id"
     t.index ["circle_id", "author_id"], name: "unique_index_circle_and_author", unique: true
     t.index ["circle_id"], name: "index_master_circles_authors_on_circle_id"
+  end
+
+  create_table "user_items", id: :bigint, default: -> { "(uuid_short())" }, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "master_type", null: false
+    t.bigint "master_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_id", "master_type", "master_id"], name: "index_user_items_on_account_id_and_master_type_and_master_id", unique: true
+    t.index ["account_id"], name: "index_user_items_on_account_id"
+    t.index ["master_type", "master_id"], name: "index_user_items_on_master_type_and_master_id"
   end
 
 end

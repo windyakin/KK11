@@ -30,6 +30,8 @@ class Master::Book < ApplicationRecord
   has_and_belongs_to_many :circles, class_name: 'Master::Circle'
   has_and_belongs_to_many :authors, class_name: 'Master::Author', join_table: 'master_books_authors'
 
+  has_many :user_items, class_name: 'User::Item', as: :master
+
   enum book_size: { b5: 'b5', b6: 'b6', a5: 'a5', other: 'other' }
 
   validates_presence_of :title

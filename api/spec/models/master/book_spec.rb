@@ -5,11 +5,11 @@
 #  id           :bigint           not null, primary key
 #  title        :string(255)      not null
 #  published_at :date             not null
-#  coalition    :boolean          default("0"), not null
-#  explicit     :boolean          default("0"), not null
+#  coalition    :boolean          default(FALSE), not null
+#  explicit     :boolean          default(FALSE), not null
 #  book_size    :string(255)      not null
 #  genre_id     :bigint
-#  page         :integer          default("0"), not null
+#  page         :integer          default(0), not null
 #  tora_id      :string(12)
 #  melon_id     :integer
 #  booth_id     :integer

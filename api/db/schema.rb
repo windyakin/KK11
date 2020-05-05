@@ -24,10 +24,13 @@ ActiveRecord::Schema.define(version: 2020_02_29_081725) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
-    t.string "name"
-    t.string "nickname"
-    t.string "image"
+    t.string "username", null: false
     t.string "email"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.text "tokens"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -35,6 +38,7 @@ ActiveRecord::Schema.define(version: 2020_02_29_081725) do
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_accounts_on_uid_and_provider", unique: true
+    t.index ["username"], name: "index_accounts_on_username", unique: true
   end
 
   create_table "master_authors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|

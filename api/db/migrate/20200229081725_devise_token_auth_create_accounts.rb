@@ -1,18 +1,18 @@
 class DeviseTokenAuthCreateAccounts < ActiveRecord::Migration[6.0]
   def change
-    
+
     create_table(:accounts) do |t|
       ## Required
-      t.string :provider, :null => false, :default => "email"
-      t.string :uid, :null => false, :default => ""
+      t.string :provider, null: false, default: 'email'
+      t.string :uid, null: false, default: ''
 
       ## Database authenticatable
-      t.string :encrypted_password, :null => false, :default => ""
+      t.string :encrypted_password, null: false, default: ''
 
       ## Recoverable
       t.string   :reset_password_token
       t.datetime :reset_password_sent_at
-      t.boolean  :allow_password_change, :default => false
+      t.boolean  :allow_password_change, default: false
 
       ## Rememberable
       t.datetime :remember_created_at
@@ -29,10 +29,15 @@ class DeviseTokenAuthCreateAccounts < ActiveRecord::Migration[6.0]
       # t.datetime :locked_at
 
       ## User Info
-      t.string :name
-      t.string :nickname
-      t.string :image
+      t.string :username, null: false
       t.string :email
+
+      ## Trackable
+      t.integer  :sign_in_count, default: 0, null: false
+      t.datetime :current_sign_in_at
+      t.datetime :last_sign_in_at
+      t.string  :current_sign_in_ip
+      t.string  :last_sign_in_ip
 
       ## Tokens
       t.text :tokens
@@ -44,6 +49,7 @@ class DeviseTokenAuthCreateAccounts < ActiveRecord::Migration[6.0]
     add_index :accounts, [:uid, :provider],     unique: true
     add_index :accounts, :reset_password_token, unique: true
     add_index :accounts, :confirmation_token,   unique: true
+    add_index :accounts, :username,             unique: true
     # add_index :accounts, :unlock_token,       unique: true
   end
 end

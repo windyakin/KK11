@@ -1,0 +1,231 @@
+openapi: 3.0.0
+info:
+  title: kk11
+  version: '1.0'
+  description: KK11
+  license:
+    name: MIT
+servers:
+  - url: 'http://localhost:13000'
+paths:
+  /v1/authentication:
+    post:
+      summary: SignUp
+      operationId: SignUp
+      responses:
+        '200':
+          description: OK
+          headers:
+            uid:
+              schema:
+                type: string
+              description: ''
+              required: true
+            access-token:
+              schema:
+                type: string
+              required: true
+            token-type:
+              schema:
+                type: string
+              required: true
+            client:
+              schema:
+                type: string
+              required: true
+            expiry:
+              schema:
+                type: string
+              required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/DeviseSucceedResponseData'
+                required:
+                  - status
+                  - data
+              examples:
+                signUpResponse:
+                  value:
+                    status: success
+                    data:
+                      uid: example@example.com
+                      id: 1
+                      email: example@example.com
+                      provider: email
+                      username: example
+                      allow_password_change: false
+                      created_at: '2020-05-05T00:00:00.000Z'
+                      updated_at: '2020-05-05T00:00:00.000Z'
+        '422':
+          description: Unprocessable Entity (WebDAV)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviseErrorResponse'
+              examples: {}
+      description: Create the account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+                username:
+                  type: string
+              required:
+                - email
+                - password
+                - password_confirmation
+                - username
+            examples:
+              signUpRequest:
+                value:
+                  username: example
+                  email: example@example.com
+                  password: password
+                  password_confirmation: password
+  /v1/authentication/sign_in:
+    post:
+      summary: ''
+      operationId: SignIn
+      responses:
+        '200':
+          description: OK
+          headers:
+            access-token:
+              schema:
+                type: string
+              required: true
+            token-type:
+              schema:
+                type: string
+              required: true
+            client:
+              schema:
+                type: string
+              required: true
+            expiry:
+              schema:
+                type: string
+              required: true
+            uid:
+              schema:
+                type: string
+              required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DeviseSucceedResponseData'
+              examples:
+                SignInResponse:
+                  value:
+                    data:
+                      id: 1
+                      email: example@example.com
+                      provider: email
+                      username: example
+                      uid: example@example.com
+                      allow_password_change: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                example-1:
+                  value:
+                    success: false
+                    errors:
+                      - Invalid login credentials. Please try again.
+      description: Login
+components:
+  schemas:
+    DeviseErrorResponse:
+      title: DeviseErrorResponse
+      type: object
+      x-examples:
+        DeviseErrorResponseExample:
+          status: error
+          data:
+            id: null
+            provider: email
+            uid: ''
+            allow_password_change: false
+            username: example
+            email: example@example.com
+            created_at: null
+            updated_at: null
+          errors:
+            email:
+              - has already been taken
+            full_messages:
+              - Email has already been taken
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+        errors:
+          type: object
+          properties:
+            full_messages:
+              type: array
+              items:
+                type: string
+      required:
+        - status
+    DeviseSucceedResponseData:
+      title: DeviseSucceedResponseData
+      type: object
+      x-examples:
+        DeviseSucceedResponseDataExample:
+          id: 1
+          email: example@example.com
+          provider: email
+          username: example
+          uid: example@example.com
+          allow_password_change: false
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        provider:
+          type: string
+        username:
+          type: string
+        uid:
+          type: string
+        allow_password_change:
+          type: boolean
+      required:
+        - id
+        - email
+        - provider
+        - username
+        - uid
+        - allow_password_change
+  securitySchemes: {}

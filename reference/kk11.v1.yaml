@@ -16,24 +16,23 @@ paths:
         '200':
           description: OK
           headers:
-            uid:
-              schema:
-                type: string
-              description: ''
-              required: true
-            access-token:
+            KK11-Access-Token:
               schema:
                 type: string
               required: true
-            token-type:
+            KK11-Identifier:
               schema:
                 type: string
               required: true
-            client:
+            KK11-Token-Type:
               schema:
                 type: string
               required: true
-            expiry:
+            KK11-Client:
+              schema:
+                type: string
+              required: true
+            KK11-Token-Expiry:
               schema:
                 type: string
               required: true
@@ -78,12 +77,18 @@ paths:
               properties:
                 email:
                   type: string
+                  example: example@example.com
                 password:
                   type: string
+                  example: password
+                  format: password
                 password_confirmation:
                   type: string
+                  format: password
+                  example: password
                 username:
                   type: string
+                  example: example
               required:
                 - email
                 - password
@@ -96,6 +101,11 @@ paths:
                   email: example@example.com
                   password: password
                   password_confirmation: password
+        description: ''
+      parameters: []
+      security: []
+      tags:
+        - DeviseOperation
   /v1/authentication/sign_in:
     post:
       summary: ''
@@ -104,23 +114,23 @@ paths:
         '200':
           description: OK
           headers:
-            access-token:
+            KK11-Access-Token:
               schema:
                 type: string
               required: true
-            token-type:
+            KK11-Token-Type:
               schema:
                 type: string
               required: true
-            client:
+            KK11-Token-Client:
               schema:
                 type: string
               required: true
-            expiry:
+            KK11-Token-Expiry:
               schema:
                 type: string
               required: true
-            uid:
+            KK11-Token-Identifier:
               schema:
                 type: string
               required: true
@@ -160,7 +170,54 @@ paths:
                     success: false
                     errors:
                       - Invalid login credentials. Please try again.
-      description: Login
+      description: Login and get api access token
+      security: []
+      tags:
+        - DeviseOperation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: example@example.com
+                password:
+                  type: string
+                  format: password
+                  example: password
+              required:
+                - email
+                - password
+            examples:
+              SinInRequestExample:
+                value:
+                  email: example@example.com
+                  password: password
+  /v1/user/items.json:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - UserItemOperation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserItemResponse'
+                required:
+                  - items
+      operationId: GetUserItems
+      parameters: []
+      description: Get user items
+    parameters: []
 components:
   schemas:
     DeviseErrorResponse:
@@ -228,4 +285,60 @@ components:
         - username
         - uid
         - allow_password_change
-  securitySchemes: {}
+    UserItemResponse:
+      title: UserItemData
+      type: object
+      properties:
+        id:
+          type: number
+        title:
+          type: string
+        published_at:
+          type: string
+          format: date
+        coalition:
+          type: boolean
+        explicit:
+          type: boolean
+        book_size:
+          type: string
+          enum:
+            - b5
+            - b4
+            - a5
+            - other
+        tora_id:
+          type: string
+        melon_id:
+          type: number
+        booth_id:
+          type: number
+        type:
+          type: string
+          enum:
+            - book
+      required:
+        - id
+        - type
+        - title
+        - published_at
+        - coalition
+        - explicit
+  securitySchemes:
+    KK11-Access-Token:
+      type: apiKey
+      in: header
+      description: ''
+      name: KK11-Access-Token
+    KK11-Client:
+      name: KK11-Client
+      type: apiKey
+      in: header
+    KK11-Identifier:
+      name: KK11-Identifier
+      type: apiKey
+      in: header
+security:
+  - KK11-Access-Token: []
+  - KK11-Client: []
+  - KK11-Identifier: []

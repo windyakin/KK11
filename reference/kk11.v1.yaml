@@ -5,6 +5,8 @@ info:
   description: KK11
   license:
     name: MIT
+  contact:
+    name: windyakin
 servers:
   - url: 'http://localhost:13000'
 paths:
@@ -195,7 +197,7 @@ paths:
                 value:
                   email: example@example.com
                   password: password
-  /v1/user/items.json:
+  /v1/user/items:
     get:
       summary: Your GET endpoint
       tags:
@@ -291,6 +293,22 @@ components:
       properties:
         id:
           type: number
+        master_type:
+          type: string
+          enum:
+            - book
+        master:
+          $ref: '#/components/schemas/MasterBookReesponse'
+      required:
+        - id
+        - master_type
+        - master
+    MasterBookReesponse:
+      title: MasterBookReesponse
+      type: object
+      properties:
+        id:
+          type: integer
         title:
           type: string
         published_at:
@@ -304,26 +322,87 @@ components:
           type: string
           enum:
             - b5
-            - b4
+            - b6
             - a5
             - other
         tora_id:
           type: string
         melon_id:
-          type: number
+          type: integer
         booth_id:
-          type: number
-        type:
-          type: string
-          enum:
-            - book
+          type: integer
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/MasterAuthorSimpleResponse'
+        circles:
+          type: array
+          items:
+            $ref: '#/components/schemas/MasterCircleSimpleResponse'
       required:
         - id
-        - type
         - title
         - published_at
         - coalition
         - explicit
+        - book_size
+        - authors
+        - circles
+    MasterAuthorSimpleResponse:
+      title: MasterAuthorSimpleResponse
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        name_kana:
+          type: string
+        description:
+          type: string
+        twitter_id:
+          type: string
+        pixiv_id:
+          type: string
+        website_url:
+          type: string
+      required:
+        - id
+        - name
+        - name_kana
+      description: Response author information only (no return circles)
+      x-examples:
+        MasterAuthorResponseExample:
+          id: 1
+          name: じゅりあん
+          name_kana: じゅりあん
+          description: ラブライブ！のオタク
+          twitter_id: MITLicense
+          pixiv_id: '168635'
+          website_url: 'https://windyakin.net/'
+    MasterCircleSimpleResponse:
+      title: MasterCircleSimpleResponse
+      type: object
+      x-examples:
+        MasterCircleSimpleResponseExample:
+          id: 1
+          name: NappleTeam
+          name_kana: なっぷるちーむ
+          description: 'https://napple.team/'
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        name_kana:
+          type: string
+        description:
+          type: string
+      required:
+        - id
+        - name
+        - name_kana
+      description: Response circle information only (no return authors)
   securitySchemes:
     KK11-Access-Token:
       type: apiKey

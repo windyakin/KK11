@@ -17,6 +17,18 @@
 #
 FactoryBot.define do
   factory :user_item, class: 'User::Item' do
-    
+    # NOTE: FactoryBot 経由だと MySQL の SHORT_UUID の値をうまく取ってこれないみたいなので指定する
+    sequence(:id)
+    association :account
+
+    trait :for_master_book do
+      association :master, factory: :master_book
+    end
+
+    trait :with_master_book do
+      # NOTE: association 関連付けした factory に指定したい trait は factory 指定より先に書く
+      # https://github.com/thoughtbot/factory_bot/blob/v5.2.0/lib/factory_bot/declaration/association.rb
+      association :master, :with_author_and_circle, factory: :master_book
+    end
   end
 end

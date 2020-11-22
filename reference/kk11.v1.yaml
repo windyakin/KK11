@@ -198,7 +198,7 @@ paths:
                 value:
                   email: example@example.com
                   password: password
-  /v1/user/items.json:
+  /v1/user/items:
     get:
       summary: Your GET endpoint
       tags:
@@ -222,7 +222,7 @@ paths:
       parameters: []
       description: Get user items
     parameters: []
-  /v1/master/books.json:
+  /v1/master/books:
     get:
       summary: Your GET endpoint
       tags: []
@@ -250,7 +250,8 @@ paths:
           required: true
           description: ''
       security: []
-  /v1/master/authors.json:
+    parameters: []
+  /v1/master/authors:
     get:
       summary: Your GET endpoint
       tags: []
@@ -278,7 +279,8 @@ paths:
           name: ids
           description: ''
           required: true
-  /v1/master/circles.json:
+    parameters: []
+  /v1/master/circles:
     get:
       summary: Your GET endpoint
       tags: []
@@ -304,7 +306,8 @@ paths:
           name: ids
           required: true
       security: []
-  '/v1/master/authors/{id}.json':
+    parameters: []
+  '/v1/master/authors/{id}':
     get:
       summary: Your GET endpoint
       tags: []
@@ -330,7 +333,7 @@ paths:
         name: id
         in: path
         required: true
-  '/v1/master/books/{id}.json':
+  '/v1/master/books/{id}':
     parameters:
       - schema:
           type: integer
@@ -354,7 +357,7 @@ paths:
                   - data
       operationId: GetMasterBook
       security: []
-  '/v1/master/circles/{id}.json':
+  '/v1/master/circles/{id}':
     parameters:
       - schema:
           type: integer

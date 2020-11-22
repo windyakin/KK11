@@ -211,12 +211,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  items:
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/UserItemResponse'
                 required:
-                  - items
+                  - data
               examples: {}
       operationId: GetUserItems
       parameters: []
@@ -234,11 +234,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  books:
+                  data:
                     $ref: '#/components/schemas/MasterBookResponse'
                 required:
-                  - books
-      operationId: get-v1-master-books.json
+                  - data
+      operationId: GetMasterBooks
       description: Get master books
       parameters:
         - schema:
@@ -261,11 +261,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  authors:
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/MasterAuthorResponse'
-      operationId: get-v1-master-authors.json
+      operationId: GetMasterAuthors
       security: []
       parameters:
         - schema:
@@ -274,6 +274,32 @@ paths:
           name: ids
           description: ''
           required: true
+  /v1/master/circles.json:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MasterCircleResponse'
+                required:
+                  - data
+      operationId: GetMasterCircles
+      parameters:
+        - schema:
+            type: array
+          in: query
+          name: ids
+          required: true
+      security: []
 components:
   schemas:
     DeviseErrorResponse:

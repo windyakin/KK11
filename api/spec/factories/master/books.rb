@@ -28,6 +28,24 @@
 
 FactoryBot.define do
   factory :master_book, class: 'Master::Book' do
-    
+    sequence(:title) { |number| "Book#{number}" }
+    published_at { '2020-01-01' }
+    coalition { false }
+    explicit { false }
+    book_size { 'b5' }
+    page { 20 }
+
+    factory :master_book_with_creators do
+      transient do
+        authors_count { 1 }
+        circles_count { 1 }
+      end
+
+      after(:create) do |book, evaluator|
+        create_list(:master_author, evaluator.authors_count, books: [book])
+        create_list(:master_circle, evaluator.circles_count, books: [book])
+        book.reload
+      end
+    end
   end
 end

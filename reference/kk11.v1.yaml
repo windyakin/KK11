@@ -5,8 +5,11 @@ info:
   description: KK11
   license:
     name: MIT
+  contact:
+    name: windyakin
 servers:
   - url: 'http://localhost:13000'
+    description: local
 paths:
   /v1/authentication:
     post:
@@ -214,10 +217,63 @@ paths:
                       $ref: '#/components/schemas/UserItemResponse'
                 required:
                   - items
+              examples: {}
       operationId: GetUserItems
       parameters: []
       description: Get user items
     parameters: []
+  /v1/master/books.json:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    $ref: '#/components/schemas/MasterBookResponse'
+                required:
+                  - books
+      operationId: get-v1-master-books.json
+      description: Get master books
+      parameters:
+        - schema:
+            type: array
+          in: query
+          name: ids
+          required: true
+          description: ''
+      security: []
+  /v1/master/authors.json:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MasterAuthorResponse'
+      operationId: get-v1-master-authors.json
+      security: []
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: ids
+          description: ''
+          required: true
 components:
   schemas:
     DeviseErrorResponse:
@@ -285,12 +341,12 @@ components:
         - username
         - uid
         - allow_password_change
-    UserItemResponse:
-      title: UserItemData
+    MasterBookResponse:
+      title: MasterBookResponse
       type: object
       properties:
         id:
-          type: number
+          type: integer
         title:
           type: string
         published_at:
@@ -308,22 +364,106 @@ components:
             - a5
             - other
         tora_id:
-          type: string
+          type:
+            - string
+            - 'null'
         melon_id:
-          type: number
+          type:
+            - integer
+            - 'null'
         booth_id:
-          type: number
-        type:
-          type: string
-          enum:
-            - book
+          type:
+            - integer
+            - 'null'
+        authors:
+          type: array
+          items:
+            type: integer
+        circles:
+          type: array
+          items:
+            type: integer
       required:
         - id
-        - type
         - title
         - published_at
         - coalition
         - explicit
+        - authors
+        - circles
+    MasterAuthorResponse:
+      title: MasterAuthorResponse
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        name_kana:
+          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        twitter_id:
+          type:
+            - string
+            - 'null'
+        pixiv_id:
+          type:
+            - string
+            - 'null'
+        website_url:
+          type:
+            - string
+            - 'null'
+      required:
+        - id
+        - name
+        - name_kana
+        - description
+        - twitter_id
+        - pixiv_id
+        - website_url
+    MasterCircleResponse:
+      title: MasterCircleResponse
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        name_kana:
+          type: string
+        description:
+          type: string
+      required:
+        - id
+        - name
+        - name_kana
+        - description
+    UserItemResponse:
+      title: UserItemResponse
+      type: object
+      properties:
+        id:
+          type: string
+        master_type:
+          type: string
+        master_id:
+          type: integer
+        created_at:
+          type: string
+          format: time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - master_type
+        - master_id
+        - created_at
+        - updated_at
   securitySchemes:
     KK11-Access-Token:
       type: apiKey

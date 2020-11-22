@@ -12,10 +12,6 @@ RSpec.describe 'GET /v1/master/authors', type: :request do
           id: master_author.id,
           name: master_author.name,
           name_kana: master_author.name_kana,
-          description: master_author.description,
-          twitter_id: master_author.twitter_id,
-          pixiv_id: master_author.pixiv_id,
-          website_url: master_author.website_url,
         }).at_path('data.0')
       end
       it { expect(response.body).to be_json.with_content(data: Expectations::ArrayWithSize[1]) }

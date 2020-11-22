@@ -12,7 +12,6 @@ RSpec.describe 'GET /v1/master/circles', type: :request do
           id: master_circle.id,
           name: master_circle.name,
           name_kana: master_circle.name_kana,
-          description: master_circle.description
         }).at_path('data.0')
       end
       it { expect(response.body).to be_json.with_content(data: Expectations::ArrayWithSize[1]) }

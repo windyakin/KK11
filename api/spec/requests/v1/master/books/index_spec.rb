@@ -14,12 +14,8 @@ RSpec.describe 'GET /v1/master/books', type: :request do
           published_at: master_book.published_at.iso8601,
           coalition: master_book.coalition,
           explicit: master_book.explicit,
-          book_size: master_book.book_size,
           author_ids: master_book.author_ids,
           circle_ids: master_book.circle_ids,
-          melon_id: master_book.melon_id,
-          tora_id: master_book.tora_id,
-          booth_id: master_book.booth_id
         }).at_path('data.0')
       end
       it { expect(response.body).to be_json.with_content(data: Expectations::ArrayWithSize[1]) }

@@ -235,7 +235,9 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/MasterBookResponse'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MasterBookSimpleResponse'
                 required:
                   - data
       operationId: GetMasterBooks
@@ -264,12 +266,14 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/MasterAuthorResponse'
+                      $ref: '#/components/schemas/MasterAuthorSimpleResponse'
+                required:
+                  - data
       operationId: GetMasterAuthors
       security: []
       parameters:
         - schema:
-            type: integer
+            type: array
           in: query
           name: ids
           description: ''
@@ -289,7 +293,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/MasterCircleResponse'
+                      $ref: '#/components/schemas/MasterCircleSimpleResponse'
                 required:
                   - data
       operationId: GetMasterCircles
@@ -300,6 +304,79 @@ paths:
           name: ids
           required: true
       security: []
+  '/v1/master/authors/{id}.json':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MasterAuthorResponse'
+                required:
+                  - data
+      operationId: GetMasterAuthor
+      description: ''
+      security: []
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+  '/v1/master/books/{id}.json':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MasterBookSimpleResponse'
+                required:
+                  - data
+      operationId: GetMasterBook
+      security: []
+  '/v1/master/circles/{id}.json':
+    parameters:
+      - schema:
+          type: integer
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/MasterCircleResponse'
+                required:
+                  - data
+      operationId: GetMasterCircle
 components:
   schemas:
     DeviseErrorResponse:
@@ -418,7 +495,6 @@ components:
         - authors
         - circles
     MasterAuthorResponse:
-      title: MasterAuthorResponse
       type: object
       properties:
         id:
@@ -490,6 +566,40 @@ components:
         - master_id
         - created_at
         - updated_at
+    MasterAuthorSimpleResponse:
+      title: MasterAuthorSimpleResponse
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        name_kana:
+          type: string
+      required:
+        - id
+        - name
+        - name_kana
+    MasterCircleSimpleResponse:
+      title: MasterCircleSimpleResponse
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        name_kana:
+          type: string
+      required:
+        - id
+        - name
+        - name_kana
+    MasterBookSimpleResponse:
+      title: MasterBookSimpleResponse
+      type: object
+      properties:
+        id:
+          type: string
   securitySchemes:
     KK11-Access-Token:
       type: apiKey

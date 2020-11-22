@@ -5,9 +5,9 @@ Rails.application.routes.draw do
       resources :items, only: [:index]
     end
     namespace :master do
-      resources :books, only: [:index]
-      resources :authors, only: [:index]
-      resources :circles, only: [:index]
+      resources :books, only: %i[index show]
+      resources :authors, only: %i[index show]
+      resources :circles, only: %i[index show]
     end
   end
 end

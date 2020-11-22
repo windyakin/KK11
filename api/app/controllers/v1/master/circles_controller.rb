@@ -6,6 +6,11 @@ module V1
         render json: { data: ::Master::CircleBlueprint.render_as_hash(circles) }
       end
 
+      def show
+        circle = ::Master::Circle.find(params[:id])
+        render json: { data: ::Master::CircleBlueprint.render_as_hash(circle, view: :show) }
+      end
+
       def circles_params
         @circles_params ||= params.require(:ids)
       end

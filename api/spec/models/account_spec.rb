@@ -33,11 +33,19 @@
 #  index_accounts_on_uid_and_provider      (uid,provider) UNIQUE
 #  index_accounts_on_username              (username) UNIQUE
 #
-class Account < ApplicationRecord
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
-  include DeviseTokenAuth::Concerns::User
+require 'rails_helper'
 
-  has_many :items, class_name: 'User::Item'
+RSpec.describe Account, type: :model do
+  describe 'associations' do
+    it { should have_many(:items).class_name('User::Item') }
+  end
 
-  validates :username, presence: true, format: { with: /\A[a-z0-9_]+\z/ }
+  describe 'validations' do
+    it { should validate_presence_of(:username) }
+
+    it { should allow_value('nappleteam').for(:username) }
+    it { should allow_value('napple_team').for(:username) }
+    it { should_not allow_value('NappleTeam').for(:username) }
+    it { should_not allow_value('ナップルチーム').for(:username) }
+  end
 end

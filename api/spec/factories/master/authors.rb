@@ -21,6 +21,7 @@
 
 FactoryBot.define do
   factory :master_author, class: 'Master::Author' do
-    
+    sequence(:name) { |number| "作者#{number}" }
+    sequence(:name_kana) { |number| "さくしゃ#{number}" }
   end
 end

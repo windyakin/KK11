@@ -16,6 +16,7 @@
 
 FactoryBot.define do
   factory :master_circle, class: 'Master::Circle' do
-    
+    sequence(:name) { |number| "サークル#{number}" }
+    sequence(:name_kana) { |number| "さーくる#{number}" }
   end
 end

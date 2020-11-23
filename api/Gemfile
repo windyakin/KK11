@@ -9,6 +9,8 @@ gem 'mysql2', '>= 0.4.4'
 gem 'puma', '~> 4.3'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
+gem 'blueprinter'
+gem 'oj'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -30,8 +32,6 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-rails'
   gem 'pry-byebug'
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
   gem 'annotate'
   gem 'rubocop-rails', require: false
 end
@@ -44,8 +44,11 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
   gem 'shoulda-matchers'
   gem 'shoulda-context'
+  gem 'rspec-json_matchers'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

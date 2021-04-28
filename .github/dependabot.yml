@@ -1,0 +1,33 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/api"
+  schedule:
+    interval: monthly
+    time: "20:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: rails
+    versions:
+    - 6.0.3.5
+  - dependency-name: rspec-rails
+    versions:
+    - 4.0.2
+    - 4.1.0
+    - 5.0.0
+  - dependency-name: bootsnap
+    versions:
+    - 1.6.0
+    - 1.7.0
+    - 1.7.1
+    - 1.7.2
+  - dependency-name: puma
+    versions:
+    - 5.2.0
+    - 5.2.1
+  - dependency-name: listen
+    versions:
+    - 3.4.1
+  - dependency-name: nokogiri
+    versions:
+    - 1.11.1
